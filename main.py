@@ -13,8 +13,14 @@ def emitir():
         resultado = emitir_factura(datos, ta)
         return jsonify(resultado)
     except Exception as e:
+        print("Error en el backend:", e)  # 👈 Esto se verá en los logs de Render
         return jsonify({"error": str(e)}), 500
+
+@app.route('/', methods=['GET'])
+def index():
+    return jsonify({"mensaje": "El endpoint /emitir funciona correctamente"})
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
+
