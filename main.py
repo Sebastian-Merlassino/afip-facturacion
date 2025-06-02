@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 @app.route('/emitir', methods=['POST'])
 def emitir():
-    datos = request.json
+    datos = request.get_json(force=True)
+    print("🔔 Datos recibidos en /emitir:", datos)
     try:
         ta = obtener_token()
         resultado = emitir_factura(datos, ta)
