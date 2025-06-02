@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, jsonify
 from app.wsaa import obtener_token
 from app.wsfe import emitir_factura
