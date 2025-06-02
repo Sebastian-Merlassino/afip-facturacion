@@ -18,6 +18,15 @@ def emitir():
         print("❌ Error en el backend:", str(e))
         return jsonify({"error": str(e)}), 500
 
+@app.route('/wsaa-test', methods=['GET'])
+def test_wsaa():
+    try:
+        ta = obtener_token()
+        return jsonify({"ticket_acceso": ta})
+    except Exception as e:
+        print("❌ Error al obtener TA:", e)
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/', methods=['GET'])
 def index():
     return jsonify({"mensaje": "El endpoint /emitir funciona correctamente"})
@@ -25,13 +34,3 @@ def index():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
-
-@app.route('/wsaa-test', methods=['GET'])
-def test_wsaa():
-    try:
-        ta = obtener_token()
-        return jsonify({"TA": ta})
-    except Exception as e:
-        print("❌ Error WSAA:", e)
-        return jsonify({"error": str(e)}), 500
-
