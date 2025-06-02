@@ -1,4 +1,5 @@
 import os
+import traceback
 from flask import Flask, request, jsonify
 from app.wsaa import obtener_token
 from app.wsfe import emitir_factura
@@ -8,14 +9,15 @@ app = Flask(__name__)
 @app.route('/emitir', methods=['POST'])
 def emitir():
     datos = request.get_json(force=True)
-    print("🔔 Datos recibidos en /emitir:", datos)  # Esto se verá en los logs de Render
+    print("🔔 Datos recibidos en /emitir:", datos)
     try:
         ta = obtener_token()
         resultado = emitir_factura(datos, ta)
-        print("✅ Resultado:", resultado)  # Log del resultado
+        print("✅ Resultado:", resultado)
         return jsonify(resultado)
     except Exception as e:
         print("❌ Error en el backend:", str(e))
+        traceback.print_exc()  # 🔍 Esto imprime el error completo en los logs de Render
         return jsonify({"error": str(e)}), 500
 
 @app.route('/wsaa-test', methods=['GET'])
@@ -25,6 +27,7 @@ def test_wsaa():
         return jsonify({"ticket_acceso": ta})
     except Exception as e:
         print("❌ Error al obtener TA:", e)
+        traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
 @app.route('/', methods=['GET'])
