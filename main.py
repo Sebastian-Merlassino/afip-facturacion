@@ -25,3 +25,13 @@ def index():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
+
+@app.route('/wsaa-test', methods=['GET'])
+def test_wsaa():
+    try:
+        ta = obtener_token()
+        return jsonify({"TA": ta})
+    except Exception as e:
+        print("❌ Error WSAA:", e)
+        return jsonify({"error": str(e)}), 500
+
